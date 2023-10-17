@@ -47,7 +47,7 @@ public class User implements UserDetails {
     return name;
   }
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
   private List<CartItem> cartItems;
 
   @Override

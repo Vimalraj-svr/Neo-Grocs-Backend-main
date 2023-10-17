@@ -18,6 +18,7 @@ public class CartItemDto {
     private Long productId;
     private String image;
     private Integer quantity;
+    private Integer price;
 
     // Constructor that accepts a Products object
     public CartItemDto(Products product) {

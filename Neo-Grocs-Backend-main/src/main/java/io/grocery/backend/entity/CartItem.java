@@ -25,4 +25,6 @@ public class CartItem {
     private Products product;
 
     private Integer quantity;
+
+    private Integer price;
 }

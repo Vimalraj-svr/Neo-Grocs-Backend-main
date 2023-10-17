@@ -9,6 +9,7 @@ import io.grocery.backend.entity.User;
 import io.grocery.backend.repository.CartItemrepository;
 import io.grocery.backend.repository.ProductsRepository;
 import io.grocery.backend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +45,14 @@ public class CartItemService {
         if (existingCartItem.isPresent()) {
             CartItem cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + cartItemDTO.getQuantity());
+            cartItem.setPrice(cartItem.getPrice()+cartItemDTO.getPrice()*cartItemDTO.getQuantity());
             cartItemRepository.save(cartItem);
         } else {
             CartItem cartItem = CartItem.builder()
                     .user(user)
                     .product(product)
                     .quantity(cartItemDTO.getQuantity())
+                    .price(cartItemDTO.getPrice()*cartItemDTO.getQuantity())
                     .build();
             cartItemRepository.save(cartItem);
         }
@@ -92,6 +95,14 @@ public class CartItemService {
         return customerDetailsList;
     }
     
-
-
+    @Transactional
+    public boolean removeCartItem(User user, Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElse(null);
+        if (cartItem != null && cartItem.getUser().getUid().equals(user.getUid())) {
+            cartItemRepository.delete(cartItem);
+            return true;
+        }
+        return false;
+    }
+    
 }
